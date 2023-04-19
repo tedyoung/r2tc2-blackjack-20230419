@@ -10,7 +10,7 @@ class CardDisplayTest {
     void displayTenAsString() {
         Card tenOfClubs = new Card(Suit.CLUBS, Rank.TEN);
 
-        assertThat(tenOfClubs.display())
+        assertThat(ConsoleCard.display(tenOfClubs))
                 .isEqualTo("[30m┌─────────┐[1B[11D│10       │[1B[11D│         │[1B[11D│    ♣    │[1B[11D│         │[1B[11D│       10│[1B[11D└─────────┘");
     }
 
@@ -18,7 +18,7 @@ class CardDisplayTest {
     void displayNonTenAsString() {
         Card fiveOfSpades = new Card(Suit.SPADES, Rank.FIVE);
 
-        assertThat(fiveOfSpades.display())
+        assertThat(ConsoleCard.display(fiveOfSpades))
                 .isEqualTo("[30m┌─────────┐[1B[11D│5        │[1B[11D│         │[1B[11D│    ♠    │[1B[11D│         │[1B[11D│        5│[1B[11D└─────────┘");
     }
 }
