@@ -13,4 +13,12 @@ class CardDisplayTest {
         assertThat(tenOfClubs.display())
                 .isEqualTo("[30m┌─────────┐[1B[11D│10       │[1B[11D│         │[1B[11D│    ♣    │[1B[11D│         │[1B[11D│       10│[1B[11D└─────────┘");
     }
+
+    @Test
+    void displayNonTenAsString() {
+        Card fiveOfSpades = new Card(Suit.SPADES, Rank.FIVE);
+
+        assertThat(fiveOfSpades.display())
+                .isEqualTo("[30m┌─────────┐[1B[11D│5        │[1B[11D│         │[1B[11D│    ♠    │[1B[11D│         │[1B[11D│        5│[1B[11D└─────────┘");
+    }
 }
