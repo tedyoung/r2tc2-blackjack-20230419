@@ -55,27 +55,42 @@ public class Game {
     public void displayGameState() {
         System.out.print(ansi().eraseScreen().cursor(1, 1));
         System.out.println("Dealer has: ");
-        System.out.println(ConsoleHand.displayFaceUpCard(dealerHand));
+        System.out.println(ConsoleHand.displayFaceUpCard(dealerHand()));
 
         // second card is the hole card, which is hidden, or "face down"
         ConsoleCard.displayBackOfCard();
 
         System.out.println();
         System.out.println("Player has: ");
-        System.out.println(ConsoleHand.cardsAsString(playerHand));
-        System.out.println(" (" + playerHand.value() + ")");
+        System.out.println(ConsoleHand.cardsAsString(playerHand()));
+        System.out.println(" (" + playerHand().value() + ")");
     }
 
     public void displayFinalGameState() {
         System.out.print(ansi().eraseScreen().cursor(1, 1));
         System.out.println("Dealer has: ");
-        System.out.println(ConsoleHand.cardsAsString(dealerHand));
-        System.out.println(" (" + dealerHand.value() + ")");
+        System.out.println(ConsoleHand.cardsAsString(dealerHand()));
+        System.out.println(" (" + dealerHand().value() + ")");
 
         System.out.println();
         System.out.println("Player has: ");
-        System.out.println(ConsoleHand.cardsAsString(playerHand));
-        System.out.println(" (" + playerHand.value() + ")");
+        System.out.println(ConsoleHand.cardsAsString(playerHand()));
+        System.out.println(" (" + playerHand().value() + ")");
+    }
+
+    // QUERY METHOD: options
+    // 1. return Hand: violates object integrity (it's a mutable object)
+    // 2. Copy of Hand: misleading to the Client/Consumer of this method (we'd like to prevent misunderstanding)
+    // 2a. Read-only interface: HandReadOnly, which only has two query methods: cards(), value()
+    // 3. Stream<Card>: not enough information — we need the value of the hand
+    // 4. DTO: live only in adapters and are generally JavaBeans (getter/setter)
+    // 5. Value Object: has data, but has query methods (and possibly some other behavior)
+    public Hand playerHand() {
+        return playerHand;
+    }
+
+    public Hand dealerHand() {
+        return dealerHand;
     }
 
     public void playerHits() {
