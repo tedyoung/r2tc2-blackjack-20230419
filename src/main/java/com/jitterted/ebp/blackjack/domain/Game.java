@@ -1,10 +1,5 @@
 package com.jitterted.ebp.blackjack.domain;
 
-import com.jitterted.ebp.blackjack.adapter.in.console.ConsoleCard;
-import com.jitterted.ebp.blackjack.adapter.in.console.ConsoleHand;
-
-import static org.fusesource.jansi.Ansi.ansi;
-
 public class Game {
 
     private final Deck deck;
@@ -29,17 +24,17 @@ public class Game {
         dealerHand.drawFrom(deck);
     }
 
-    public void determineOutcome() {
+    public String determineOutcome() {
         if (playerHand.isBusted()) {
-            System.out.println("You Busted, so you lose.  💸");
+            return "You Busted, so you lose.  💸";
         } else if (dealerHand.isBusted()) {
-            System.out.println("Dealer went BUST, Player wins! Yay for you!! 💵");
+            return "Dealer went BUST, Player wins! Yay for you!! 💵";
         } else if (playerHand.beats(dealerHand)) {
-            System.out.println("You beat the Dealer! 💵");
+            return "You beat the Dealer! 💵";
         } else if (playerHand.pushes(dealerHand)) {
-            System.out.println("Push: Nobody wins, we'll call it even.");
+            return "Push: Nobody wins, we'll call it even.";
         } else {
-            System.out.println("You lost to the Dealer. 💸");
+            return "You lost to the Dealer. 💸";
         }
     }
 
@@ -50,32 +45,6 @@ public class Game {
                 dealerHand.drawFrom(deck);
             }
         }
-    }
-
-    public void displayGameState() {
-        System.out.print(ansi().eraseScreen().cursor(1, 1));
-        System.out.println("Dealer has: ");
-        System.out.println(ConsoleHand.displayFaceUpCard(dealerHand()));
-
-        // second card is the hole card, which is hidden, or "face down"
-        ConsoleCard.displayBackOfCard();
-
-        System.out.println();
-        System.out.println("Player has: ");
-        System.out.println(ConsoleHand.cardsAsString(playerHand()));
-        System.out.println(" (" + playerHand().value() + ")");
-    }
-
-    public void displayFinalGameState() {
-        System.out.print(ansi().eraseScreen().cursor(1, 1));
-        System.out.println("Dealer has: ");
-        System.out.println(ConsoleHand.cardsAsString(dealerHand()));
-        System.out.println(" (" + dealerHand().value() + ")");
-
-        System.out.println();
-        System.out.println("Player has: ");
-        System.out.println(ConsoleHand.cardsAsString(playerHand()));
-        System.out.println(" (" + playerHand().value() + ")");
     }
 
     // QUERY METHOD: options
