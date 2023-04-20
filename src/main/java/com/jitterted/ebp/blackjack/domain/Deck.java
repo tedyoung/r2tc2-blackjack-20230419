@@ -13,7 +13,7 @@ public class Deck {
                 cards.add(new Card(suit, rank));
             }
         }
-        Collections.shuffle(cards);
+        Collections.shuffle(cards); // violates Hexagonal Architecture
     }
 
     public int size() {
