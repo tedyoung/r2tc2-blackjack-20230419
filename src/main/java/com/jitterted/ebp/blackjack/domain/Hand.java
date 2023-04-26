@@ -46,6 +46,7 @@ public class Hand {
     }
 
     public void drawFrom(Deck deck) {
+        // "invariant" can't draw if has Blackjack or is Busted
         cards.add(deck.draw());
     }
 
