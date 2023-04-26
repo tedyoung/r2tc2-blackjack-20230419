@@ -45,6 +45,12 @@ public class StubDeck implements Deck {
                             Rank.THREE);
     }
 
+    public static Deck playerHitsDoesNotBust() {
+        return new StubDeck(Rank.TEN, Rank.EIGHT,
+                            Rank.SEVEN, Rank.JACK,
+                            Rank.THREE);
+    }
+
     @Override
     public Card draw() {
         return iterator.next();
