@@ -9,6 +9,11 @@ public class StubDeck implements Deck {
     private final ListIterator<Card> iterator;
     private final int size;
 
+    public StubDeck(List<Card> cards) {
+        this.iterator = cards.listIterator();
+        this.size = cards.size();
+    }
+
     public StubDeck(Rank... ranks) {
         List<Card> cards = new ArrayList<>();
         for (Rank rank : ranks) {
