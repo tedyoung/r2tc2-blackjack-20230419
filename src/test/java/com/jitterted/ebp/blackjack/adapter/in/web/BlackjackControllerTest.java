@@ -83,12 +83,10 @@ class BlackjackControllerTest {
 
     @Test
     public void donePageShowsFinalGameStateWithOutcome() throws Exception {
-        Game game = new Game(StubDeck.playerPushesWithDealer());
-        BlackjackController blackjackController = new BlackjackController(game);
-        blackjackController.startGame();
+        Fixture fixture = createFixture(StubDeck.playerPushesWithDealer());
 
         Model model = new ConcurrentModel();
-        blackjackController.doneView(model);
+        fixture.blackjackController.doneView(model);
 
         assertThat(model.containsAttribute("gameView"))
                 .isTrue();
@@ -100,15 +98,41 @@ class BlackjackControllerTest {
 
     @Test
     void playerStandsResultsInRedirectToDonePageAndPlayerIsDone() {
-        Game game = new Game(StubDeck.playerStandsAndBeatsDealer());
-        BlackjackController blackjackController = new BlackjackController(game);
-        blackjackController.startGame();
+        Fixture fixture = createFixture(StubDeck.playerStandsAndBeatsDealer());
 
-        String redirectPage = blackjackController.standCommand();
+        String redirectPage = fixture.blackjackController.standCommand();
 
         assertThat(redirectPage)
                 .isEqualTo("redirect:/done");
-        assertThat(game.isPlayerDone())
+        assertThat(fixture.game.isPlayerDone())
                 .isTrue();
+    }
+
+    private Fixture createFixture(Deck deck) {
+        Game game = new Game(deck);
+        BlackjackController blackjackController = new BlackjackController(game);
+        blackjackController.startGame();
+
+        return new Fixture(game, blackjackController);
+    }
+
+    @Test
+    void standResultsInDealerDrawingCardOnTheirTurn() throws Exception {
+        Fixture fixture = createFixture(StubDeck.dealerDrawsOneCardOnTheirTurn());
+
+        fixture.blackjackController.standCommand();
+
+        assertThat(fixture.game.dealerHand().cards())
+                .hasSize(3);
+    }
+
+    private static class Fixture {
+        Game game;
+        BlackjackController blackjackController;
+
+        public Fixture(Game game, BlackjackController blackjackController) {
+            this.game = game;
+            this.blackjackController = blackjackController;
+        }
     }
 }
