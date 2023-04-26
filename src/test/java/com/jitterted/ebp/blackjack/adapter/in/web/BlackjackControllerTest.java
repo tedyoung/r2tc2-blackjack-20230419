@@ -65,6 +65,8 @@ class BlackjackControllerTest {
 
         assertThat(redirectPage)
                 .isEqualTo("redirect:/game");
+        assertThat(game.playerHand().cards())
+                .hasSize(3);
     }
 
 }
