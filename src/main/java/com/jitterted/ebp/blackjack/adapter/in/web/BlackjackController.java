@@ -31,6 +31,6 @@ public class BlackjackController {
 
     @PostMapping("/hit")
     public String hitCommand() {
-        return "redirect:/";
+        return "redirect:/game";
     }
 }
