@@ -19,4 +19,16 @@ class GameMonitorTest {
         // verify that the roundCompleted method was called with the specific Game we're using
         verify(gameMonitorSpy).roundCompleted(game);
     }
+
+    @Test
+    void playerHitsAndGoesBustThenGameResultsSentToMonitor() {
+        GameMonitor gameMonitorSpy = spy(GameMonitor.class);
+        Game game = new Game(StubDeck.playerHitsAndGoesBust(), gameMonitorSpy);
+        game.initialDeal();
+
+        game.playerHits();
+
+        // verify that the roundCompleted method was called with the specific Game we're using
+        verify(gameMonitorSpy).roundCompleted(game);
+    }
 }
