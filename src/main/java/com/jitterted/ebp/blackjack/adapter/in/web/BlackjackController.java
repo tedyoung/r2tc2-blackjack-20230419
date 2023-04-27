@@ -20,6 +20,23 @@ public class BlackjackController {
     @PostMapping("/start-game")
     public String startGame() {
         game.initialDeal();
+        return redirectBasedOnGameState();
+    }
+
+    // MAPPING of DOMAIN STATE to a VIEW
+    @PostMapping("/hit")
+    public String hitCommand() {
+        game.playerHits();
+        return redirectBasedOnGameState();
+    }
+
+    @PostMapping("/stand")
+    public String standCommand() {
+        game.playerStands();
+        return redirectBasedOnGameState();
+    }
+
+    private String redirectBasedOnGameState() {
         if (game.isPlayerDone()) {
             return "redirect:/done";
         } else {
@@ -33,28 +50,12 @@ public class BlackjackController {
         return "blackjack";
     }
 
-    @PostMapping("/hit")
-    public String hitCommand() {
-        game.playerHits();
-        if (game.isPlayerDone()) {
-            return "redirect:/done";
-        } else {
-            return "redirect:/game";
-        }
-    }
-
     @GetMapping("/done")
     public String doneView(Model model) {
         model.addAttribute("gameView", GameView.from(game));
         model.addAttribute("outcome", game.determineOutcome().message());
 
         return "done";
-    }
-
-    @PostMapping("/stand")
-    public String standCommand() {
-        game.playerStands();
-        return "redirect:/done";
     }
 
 }
