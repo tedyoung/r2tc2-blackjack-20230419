@@ -41,7 +41,19 @@ class GameMonitorTest {
 
         game.playerHits();
 
-        // verify that the roundCompleted method was called with the specific Game we're using
+        // verify that the roundCompleted method was NOT called
         verify(gameMonitorSpy, never()).roundCompleted(game);
     }
+
+    @Test
+    void playerDealtBlackjackThenGameResultsSentToMonitor() {
+        GameMonitor gameMonitorSpy = spy(GameMonitor.class);
+        Game game = new Game(StubDeck.playerDealtBlackjackDealerNotDealtBlackjack(), gameMonitorSpy);
+
+        game.initialDeal();
+
+        verify(gameMonitorSpy).roundCompleted(game);
+    }
+
+
 }
