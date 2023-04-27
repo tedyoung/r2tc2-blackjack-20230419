@@ -83,7 +83,7 @@ class BlackjackControllerTest {
 
     @Test
     public void donePageShowsFinalGameStateWithOutcome() throws Exception {
-        Fixture fixture = createFixture(StubDeck.playerPushesWithDealer());
+        Fixture fixture = createFixtureAndStartGame(StubDeck.playerPushesWithDealer());
 
         Model model = new ConcurrentModel();
         fixture.blackjackController.doneView(model);
@@ -98,7 +98,7 @@ class BlackjackControllerTest {
 
     @Test
     void playerStandsResultsInRedirectToDonePageAndPlayerIsDone() {
-        Fixture fixture = createFixture(StubDeck.playerStandsAndBeatsDealer());
+        Fixture fixture = createFixtureAndStartGame(StubDeck.playerStandsAndBeatsDealer());
 
         String redirectPage = fixture.blackjackController.standCommand();
 
@@ -108,22 +108,39 @@ class BlackjackControllerTest {
                 .isTrue();
     }
 
-    private Fixture createFixture(Deck deck) {
-        Game game = new Game(deck);
-        BlackjackController blackjackController = new BlackjackController(game);
-        blackjackController.startGame();
-
-        return new Fixture(game, blackjackController);
-    }
-
     @Test
     void standResultsInDealerDrawingCardOnTheirTurn() throws Exception {
-        Fixture fixture = createFixture(StubDeck.dealerDrawsOneCardOnTheirTurn());
+        Fixture fixture = createFixtureAndStartGame(StubDeck.dealerDrawsOneCardOnTheirTurn());
 
         fixture.blackjackController.standCommand();
 
         assertThat(fixture.game.dealerHand().cards())
                 .hasSize(3);
+    }
+
+    @Test
+    public void playerDealtBlackjackRedirectsToDone() throws Exception {
+        Fixture fixture = createFixture(StubDeck.playerDealtBlackjackDealerNotDealtBlackjack());
+
+        String redirectPage = fixture.blackjackController.startGame();
+
+        assertThat(redirectPage)
+                .isEqualTo("redirect:/done");
+    }
+
+
+    private Fixture createFixture(Deck deck) {
+        Game game = new Game(deck);
+        BlackjackController blackjackController = new BlackjackController(game);
+
+        return new Fixture(game, blackjackController);
+    }
+
+    private Fixture createFixtureAndStartGame(Deck deck) {
+        Fixture fixture = createFixture(deck);
+        fixture.blackjackController.startGame();
+
+        return fixture;
     }
 
     private static class Fixture {

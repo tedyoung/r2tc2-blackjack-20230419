@@ -41,9 +41,7 @@ class GameOutcomeTest {
 
     @Test
     void playerDealtBlackjackUponInitialDealThenWinsBlackjack() {
-        Deck playerDealtBlackjackDealerNotDealtBlackjack = new StubDeck(Rank.ACE, Rank.NINE,
-                                                 Rank.JACK, Rank.QUEEN);
-        Game game = new Game(playerDealtBlackjackDealerNotDealtBlackjack);
+        Game game = new Game(StubDeck.playerDealtBlackjackDealerNotDealtBlackjack());
 
         game.initialDeal();
 
